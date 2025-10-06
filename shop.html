@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - ShopSphere</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .price-range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+        }
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4f46e5;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .active-filter {
+            background-color: #4f46e5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-2xl font-bold text-indigo-600 flex items-center">
+                        <i data-feather="shopping-bag" class="mr-2"></i>
+                        ShopSphere
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-800 hover:text-indigo-600 font-medium">Home</a>
+                    <a href="shop.html" class="text-indigo-600 font-medium">Shop</a>
+                    <a href="about.html" class="text-gray-800 hover:text-indigo-600 font-medium">About</a>
+                    <a href="contact.html" class="text-gray-800 hover:text-indigo-600 font-medium">Contact</a>
+                    <a href="faq.html" class="text-gray-800 hover:text-indigo-600 font-medium">FAQ</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i data-feather="search"></i>
+                    </button>
+                    <a href="cart.html" class="p-2 rounded-full hover:bg-gray-100 relative">
+                        <i data-feather="shopping-cart"></i>
+                        <span class="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </a>
+                    <a href="login.html" class="hidden md:block px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300">Login</a>
+                    <button class="md:hidden p-2 rounded-full hover:bg-gray-100" id="mobile-menu-button">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile menu -->
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-indigo-600">Home</a>
+                    <a href="shop.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600">Shop</a>
+                    <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-indigo-600">About</a>
+                    <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-indigo-600">Contact</a>
+                    <a href="faq.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-indigo-600">FAQ</a>
+                    <a href="login.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Header -->
+    <div class="bg-indigo-600 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4 md:mb-0">Our Products</h1>
+                <div class="flex items-center">
+                    <nav class="flex" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                            <li class="inline-flex items-center">
+                                <a href="index.html" class="inline-flex items-center text-sm font-medium text-indigo-200 hover:text-white">
+                                    <i data-feather="home" class="mr-2 w-4 h-4"></i>
+                                    Home
+                                </a>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <i data-feather="chevron-right" class="w-4 h-4 text-indigo-300"></i>
+                                    <span class="ml-1 text-sm font-medium text-white md:ml-2">Shop</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Content -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Filters -->
+            <div class="lg:w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="font-semibold text-lg text-gray-800 mb-4 flex items-center">
+                        <i data-feather="filter" class="mr-2"></i> Filters
+                    </h3>
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-3">Categories</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <i data-feather="smartphone" class="mr-2 w-4 h-4"></i> Electronics
+                                    <span class="ml-auto text-gray-500">(52)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <i data-feather="tshirt" class="mr-2 w-4 h-4"></i> Fashion
+                                    <span class="ml-auto text-gray-500">(128)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <i data-feather="home" class="mr-2 w-4 h-4"></i> Home & Living
+                                    <span class="ml-auto text-gray-500">(76)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <i data-feather="heart" class="mr-2 w-4 h-4"></i> Health & Beauty
+                                    <span class="ml-auto text-gray-500">(94)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <i data-feather="book" class="mr-2 w-4 h-4"></i> Books
+                                    <span class="ml-auto text-gray-500">(42)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-3">Price Range</h4>
+                        <div class="mb-4">
+                            <input type="range" min="0" max="1000" value="500" class="price-range-slider" id="priceRange">
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>$0</span>
+                            <span>$500</span>
+                            <span>$1000+</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-3">Brand</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2 text-gray-600">Samsung</span>
+                                    <span class="ml-auto text-gray-500">(24)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2 text-gray-600">Apple</span>
+                                    <span class="ml-auto text-gray-500">(18)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2 text-gray-600">Sony</span>
+                                    <span class="ml-auto text-gray-500">(12)</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2 text-gray-600">Nike</span>
+                                    <span class="ml-auto text-gray-500">(32)</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">Ratings</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <div class="flex text-yellow-400 mr-2">
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    </div>
+                                    <span class="ml-auto text-gray-500">(86)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <div class="flex text-yellow-400 mr-2">
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4"></i>
+                                    </div>
+                                    <span class="ml-auto text-gray-500">(142)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-gray-600 hover:text-indigo-600">
+                                    <div class="flex text-yellow-400 mr-2">
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-feather="star" class="w-4 h-4"></i>
+                                        <i data-feather="star" class="w-4 h-4"></i>
+                                    </div>
+                                    <span class="ml-auto text-gray-500">(65)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="w-full mt-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition duration-300">
+                        Apply Filters
+                    </button>
+                    <button class="w-full mt-2 py-2 bg-white text-indigo-600 border border-indigo-600 rounded-lg font-medium hover:bg-indigo-50 transition duration-300">
+                        Reset
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-semibold text-lg text-gray-800 mb-4 flex items-center">
+                        <i data-feather="tag" class="mr-2"></i> Special Offers
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-indigo-50 rounded-lg p-4">
+                            <h4 class="font-medium text-indigo-700 mb-1">Summer Sale</h4>
+                            <p class="text-sm text-gray-600">Up to 50% off on selected items</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <h4 class="font-medium text-green-700 mb-1">New Arrivals</h4>
+                            <p class="text-sm text-gray-600">Discover our latest products</p>
+                        </div>
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <h4 class="font-medium text-yellow-700 mb-1">Free Shipping</h4>
+                            <p class="text-sm text-gray-600">On orders over $100</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div class="mb-4 md:mb-0">
+                            <p class="text-gray-600">Showing <span class="font-medium">1-12</span> of <span class="font-medium">48</span> products</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <span class="mr-2 text-gray-600">Sort by:</span>
+                                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option>Featured</option>
+                                    <option>Price: Low to High</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Newest</option>
+                                    <option>Best Rating</option>
+                                </select>
+                            </div>
+                            <div class="hidden md:flex space-x-1">
+                                <button class="p-2 rounded-lg border border-gray-300 hover:bg-gray-100">
+                                    <i data-feather="list"></i>
+                                </button>
+                                <button class="p-2 rounded-lg border border-indigo-600 bg-indigo-600 text-white">
+                                    <i data-feather="grid"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Product 1 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/6" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(42)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Smartphone X</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$599.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$699.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-14%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/7" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(128)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Wireless Earbuds Pro</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$129.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$159.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-19%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/8" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(25)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Fitness Tracker</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$79.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$99.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 4 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/9" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(87)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Gaming Laptop</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$1,299.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$1,499.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-13%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 5 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/10" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(64)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Smart Home Hub</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$249.99</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 6 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/11" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(38)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">4K Monitor</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$349.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$399.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-12%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 7 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/12" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(112)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Wireless Keyboard</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$59.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$79.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-25%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 8 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/13" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                    <i data-feather="star" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(29)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Portable Speaker</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$89.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$109.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-18%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 9 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
+                        <div class="relative">
+                            <img src="http://static.photos/technology/640x360/14" alt="Product" class="w-full h-64 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <button class="p-2 bg-white rounded-full shadow-md hover:bg-indigo-100">
+                                    <i data-feather="heart" class="w-5 h-5 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                <button class="w-full py-2 bg-indigo-600 text-white rounded font-medium hover:bg-indigo-700 transition duration-300">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400">
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">(73)</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-1">Tablet Pro</h3>
+                            <div class="flex items-center">
+                                <span class="text-indigo-600 font-bold text-lg">$399.99</span>
+                                <span class="text-gray-500 line-through text-sm ml-2">$449.99</span>
+                                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">-11%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-12 flex justify-center">
+                    <nav class="flex items-center space-x-2">
+                        <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                            <i data-feather="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <button class="px-4 py-1 rounded-lg bg-indigo-600 text-white">1</button>
+                        <button class="px-4 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">2</button>
+                        <button class="px-4 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">3</button>
+                        <button class="px-4 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">4</button>
+                        <span class="px-2 text-gray-600">...</span>
+                        <button class="px-4 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">10</button>
+                        <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                            <i data-feather="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <a href="index.html" class="text-2xl font-bold text-white flex items-center mb-6">
+                        <i data-feather="shopping-bag" class="mr-2"></i>
+                        ShopSphere
+                    </a>
+                    <p class="text-gray-400 mb-6">Your one-stop shop for all the latest products and trends. Quality, convenience, and style all in one place.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="youtube" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="shop.html" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition duration-300">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Customer Service</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Shipping Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Return Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Track Order</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Contact Us</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-start">
+                            <i data-feather="map-pin" class="w-5 h-5 mr-3 mt-1"></i>
+                            <span>123 Shopping Lane, Retail City, RC 10001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="mail" class="w-5 h-5 mr-3"></i>
+                            <span>support@shopsphere.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="phone" class="w-5 h-5 mr-3"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 ShopSphere. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <img src="https://via.placeholder.com/40x25?text=Visa" alt="Visa" class="h-6">
+                    <img src="https://via.placeholder.com/40x25?text=MC" alt="Mastercard" class="h-6">
+                    <img src="https://via.placeholder.com/40x25?text=Amex" alt="American Express" class="h-6">
+                    <img src="https://via.placeholder.com/40x25?text=PayPal" alt="PayPal" class="h-6">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Initialize feather icons
+        feather.replace();
+        
+        // Simple animation for product cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.product-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
